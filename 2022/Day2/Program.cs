@@ -3,6 +3,10 @@
 var sum = CalculateTotalScore(inputLines);
 Console.WriteLine($"Total score is {sum}");
 
+var sumCorrected = CalculateTotalScoreCorrected(inputLines);
+Console.WriteLine($"Total corrected score is {sumCorrected}");
+
+
 Int32 GetShapeScore(Char me) => me switch
 {
     'X' => 1,
@@ -51,4 +55,49 @@ int CalculateTotalScore(string[] inputLines)
     }
 
     return sum;
+}
+
+int CalculateTotalScoreCorrected(string[] inputLines)
+{
+    var sum = 0;
+
+    foreach (var line in inputLines)
+    {
+        var opponent = line[0];
+        var me = line[2];
+
+        var myPredictedShape = GetPredictedShape( opponent,me );
+
+        var myScore = GetShapeScore(myPredictedShape);
+        var outcomeScore = GetOutcomeScore(opponent, myPredictedShape);
+
+        sum += (myScore + outcomeScore);
+    }
+
+    return sum;
+}
+
+Char GetPredictedShape(Char opponent, Char me)
+{
+    return me switch
+    {
+        'X' => opponent switch
+        {
+            'A' => 'Z',
+            'B' => 'X',
+            'C' => 'Y',
+        },
+        'Y' => opponent switch
+        {
+            'A' => 'X',
+            'B' => 'Y',
+            'C' => 'Z',
+        },
+        'Z' => opponent switch
+        {
+            'A' => 'Y',
+            'B' => 'Z',
+            'C' => 'X',
+        },
+    };
 }
