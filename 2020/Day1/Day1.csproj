@@ -6,9 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="input.txt">
+    <None Remove="input.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Page>
   </ItemGroup>
 
 </Project>
