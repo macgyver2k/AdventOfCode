@@ -6,15 +6,30 @@ var inputLines = await File.ReadAllLinesAsync("input.txt");
 var root = ReadTree(inputLines);
 var bigDirectories = new List<(DirectoryNode Node, Int64 Size)>();
 
-var result = GetFileSize(root, 100000, bigDirectories);
-var sum = bigDirectories.Where(_ => _.Size <= 100000).Sum(_ => _.Size);
-
+var result = GetFileSize(root, bigDirectories);
+var sum = bigDirectories.Where(_ => _.Size <= 100_000).Sum(_ => _.Size);
 Console.WriteLine( $"The sum is {sum}" );
 
-static Int64 GetFileSize( DirectoryNode node, Int64 minimumSize, List<(DirectoryNode Node, Int64 Size)> bigDirectories )
+var rootSize = GetFileSize(root, bigDirectories);
+Console.WriteLine($"The root size is {rootSize}");
+
+var total = 70_000_000;
+var needed = 30_000_000;
+var free = total - rootSize;
+var max = needed - free;
+
+var y = bigDirectories
+    .Where(_ => _.Size >= max)
+    .OrderBy(_ => _.Size)
+    .ToArray();
+
+var sumFree = y.First();
+Console.WriteLine($"The sum is {sumFree}");
+
+static Int64 GetFileSize( DirectoryNode node, List<(DirectoryNode Node, Int64 Size)> bigDirectories )
 {
     var fileSizeSum = node.FileNodes.Sum(_ => _.Size);
-    var subDirSizeSum = node.DirectoryNodes.Select(_ => GetFileSize(_, minimumSize,bigDirectories)).Sum();
+    var subDirSizeSum = node.DirectoryNodes.Select(_ => GetFileSize(_, bigDirectories)).Sum();
     var sum = fileSizeSum + subDirSizeSum;
 
     bigDirectories.Add((node, sum));
