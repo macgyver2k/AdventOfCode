@@ -111,7 +111,7 @@ static int CalculateBestView(int[][] result, int width, int height, int[][] colu
             }
            
             var s = (Int32)((255.0 / 496650.0) * score);
-            Console.Write( "O".Pastel(Color.FromArgb( 0, s, 0)));
+            Console.Write( "+".Pastel(Color.FromArgb( 0, s, 0)));
         }
 
         Console.WriteLine();
